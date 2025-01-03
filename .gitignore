@@ -1,0 +1,7 @@
+__pyche__
+*.pyc
+*.pyo
+blog/blog-env/
+blog/__pyche__/
+fastapi
+blog-env
