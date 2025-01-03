@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from typing import Optional
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -28,6 +29,19 @@ def show(id: int): #id:int ensures the id inly accepts int and not string
 
 # Getgit push comments based on the blog id
 @app.get('/blog/{id}/comments')
-def comments(id):
+def comments(id, limit=10):
     # fetch comments of blog with id = id
     return {'data': {'1', '2'}}
+
+
+
+# Create a model
+class Blog(BaseModel):
+    title: str
+    body: str
+    published: Optional[bool]
+
+
+@app.post('/blog')
+def create_blog(blog: Blog):
+    return {'data': f'blog is created with title as "{blog.title}"'}
