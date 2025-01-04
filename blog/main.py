@@ -32,6 +32,16 @@ def create(request: Blog, db:Session = Depends(get_db)):
 
 
 
+@app.delete('/blog/{id}')
+def destroy(id, db:Session = Depends(get_db)):
+    # Delete an element on the db using the id
+    db.query(models.Blog).filter(models.Blog.id ==
+                                        id).delete(synchronize_session=False)
+    db.commit() # Commit changes to the db
+    return Response(status_code=status.HTTP_204_NO_CONTENT) 
+
+
+
 @app.get('/blog')
 def get_all(db: Session = Depends(get_db)):
     # Returns all blogs
