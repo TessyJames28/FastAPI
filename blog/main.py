@@ -29,3 +29,11 @@ def create(request: Blog, db:Session = Depends(get_db)):
     db.commit() # Commit/save to db
     db.refresh(new_blog) # Refresh so as to return the newly created blog
     return new_blog
+
+
+
+@app.get('/blog')
+def get_all(db: Session = Depends(get_db)):
+    # Returns all blogs
+    blogs = db.query(models.Blog).all()
+    return blogs
