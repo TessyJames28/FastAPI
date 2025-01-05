@@ -1,8 +1,9 @@
 from . import models
 from fastapi import FastAPI, Depends, status, Response, HTTPException
-from .schemas import Blog
+from .schemas import Blog, ShowBlog
 from .database import engine, SessionLocal
 from sqlalchemy.orm.session import Session
+from typing import List
 
 
 app = FastAPI()
@@ -58,17 +59,19 @@ def update(id, request: Blog, db:Session = Depends(get_db)):
 
 
 
-@app.get('/blog')
+@app.get('/blog', response_model=List[ShowBlog])
 def get_all(db: Session = Depends(get_db)):
     # Returns all blogs
+    # The use of List from typing retrieve the blog titles and body as a list
     blogs = db.query(models.Blog).all()
     return blogs
 
 
 
-@app.get('/blog/{id}', status_code=status.HTTP_200_OK)
+@app.get('/blog/{id}', status_code=status.HTTP_200_OK, response_model=ShowBlog)
 def get_by_id(id, response: Response, db: Session = Depends(get_db), ):
     # Retrieve blog based on given id
+    # The response_model with the defined schema acts like the serializer on Django
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
     if not blog:
         # response.status_code = status.HTTP_404_NOT_FOUND
