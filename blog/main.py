@@ -23,7 +23,7 @@ def get_db():
         db.close()
 
 
-@app.post('/blog', status_code=status.HTTP_201_CREATED)
+@app.post('/blog', status_code=status.HTTP_201_CREATED, tags=['blogs'])
 def create(request: Blog, db:Session = Depends(get_db)):
     # Create blog based on the schema: using request body
     new_blog = models.Blog(title=request.title, body=request.body) 
@@ -34,7 +34,7 @@ def create(request: Blog, db:Session = Depends(get_db)):
 
 
 
-@app.delete('/blog/{id}')
+@app.delete('/blog/{id}', tags=['blogs'])
 def destroy(id, db:Session = Depends(get_db)):
     # Delete an element on the db using the id
     blog = db.query(models.Blog).filter(models.Blog.id == id)
@@ -47,7 +47,7 @@ def destroy(id, db:Session = Depends(get_db)):
 
 
 
-@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED)
+@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED, tags=['blogs'])
 def update(id, request: Blog, db:Session = Depends(get_db)):
     # Update the blog based on id. request.dict() convert pydantic model into a dictionary
     blog = db.query(models.Blog).filter(models.Blog.id == id)
@@ -60,7 +60,7 @@ def update(id, request: Blog, db:Session = Depends(get_db)):
 
 
 
-@app.get('/blog', response_model=List[ShowBlog])
+@app.get('/blog', response_model=List[ShowBlog], tags=['blogs'])
 def get_all(db: Session = Depends(get_db)):
     # Returns all blogs
     # The use of List from typing retrieve the blog titles and body as a list
@@ -69,7 +69,7 @@ def get_all(db: Session = Depends(get_db)):
 
 
 
-@app.get('/blog/{id}', status_code=status.HTTP_200_OK, response_model=ShowBlog)
+@app.get('/blog/{id}', status_code=status.HTTP_200_OK, response_model=ShowBlog, tags=['blogs'])
 def get_by_id(id, response: Response, db: Session = Depends(get_db)):
     # Retrieve blog based on given id
     # The response_model with the defined schema acts like the serializer on Django
@@ -83,7 +83,7 @@ def get_by_id(id, response: Response, db: Session = Depends(get_db)):
 
 
 
-@app.post('/user', response_model=ShowUser)
+@app.post('/user', response_model=ShowUser, tags=['users'])
 def create_user(request: User, db:Session = Depends(get_db)):
     # Function that creates new user
     hashed_pwd = Hash.bcrypt(request.password)
@@ -95,7 +95,7 @@ def create_user(request: User, db:Session = Depends(get_db)):
 
 
 
-@app.get('/user/{id}', response_model=ShowUser)
+@app.get('/user/{id}', response_model=ShowUser, tags=['users'])
 def get_user(id, db: Session = Depends(get_db)):
     # Retrieve user based on given id
     user = db.query(models.User).filter(models.User.id == id).first()
