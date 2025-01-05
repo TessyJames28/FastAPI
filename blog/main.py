@@ -1,7 +1,7 @@
 from . import models
 from fastapi import FastAPI, Depends, status, Response, HTTPException
 from .hashing import Hash
-from .schemas import Blog, ShowBlog, User
+from .schemas import Blog, ShowBlog, User, ShowUser
 from .database import engine, SessionLocal
 from sqlalchemy.orm.session import Session
 from typing import List
@@ -70,7 +70,7 @@ def get_all(db: Session = Depends(get_db)):
 
 
 @app.get('/blog/{id}', status_code=status.HTTP_200_OK, response_model=ShowBlog)
-def get_by_id(id, response: Response, db: Session = Depends(get_db), ):
+def get_by_id(id, response: Response, db: Session = Depends(get_db)):
     # Retrieve blog based on given id
     # The response_model with the defined schema acts like the serializer on Django
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
@@ -83,7 +83,7 @@ def get_by_id(id, response: Response, db: Session = Depends(get_db), ):
 
 
 
-@app.post('/user')
+@app.post('/user', response_model=ShowUser)
 def create_user(request: User, db:Session = Depends(get_db)):
     # Function that creates new user
     hashed_pwd = Hash.bcrypt(request.password)
@@ -92,3 +92,14 @@ def create_user(request: User, db:Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     return new_user
+
+
+
+@app.get('/user/{id}', response_model=ShowUser)
+def get_user(id, db: Session = Depends(get_db)):
+    # Retrieve user based on given id
+    user = db.query(models.User).filter(models.User.id == id).first()
+    if not user:
+        raise HTTPException(status_code = status.HTTP_404_NOT_FOUND, 
+                            detail = f"User with the id {id} not found")
+    return user
