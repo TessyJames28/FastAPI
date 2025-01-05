@@ -1,5 +1,6 @@
 from . import models
 from fastapi import FastAPI, Depends, status, Response, HTTPException
+from .hashing import Hash
 from .schemas import Blog, ShowBlog, User
 from .database import engine, SessionLocal
 from sqlalchemy.orm.session import Session
@@ -84,7 +85,9 @@ def get_by_id(id, response: Response, db: Session = Depends(get_db), ):
 
 @app.post('/user')
 def create_user(request: User, db:Session = Depends(get_db)):
-    new_user = models.User(name = request.name, email = request.email, password = request.password)
+    # Function that creates new user
+    hashed_pwd = Hash.bcrypt(request.password)
+    new_user = models.User(name = request.name, email = request.email, password = hashed_pwd)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
