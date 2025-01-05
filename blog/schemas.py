@@ -16,4 +16,19 @@ class ShowBlog(BaseModel):
     class Config():
         orm_mode = True
 
-    
+
+
+# Schema for blog users
+class User(BaseModel):
+    name:str
+    email:str
+    password:str 
+
+
+# Schema for the formatted display of users. This allows the display of desired fields
+class ShowUser(BaseModel):
+    name:str
+    email:str
+
+    class Config():
+        orm_mode = True
