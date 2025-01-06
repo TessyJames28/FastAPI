@@ -11,7 +11,7 @@ class BlogBase(BaseModel):
 # Schema for the blog creation
 class Blog(BlogBase):
     class Config():
-        orm_mode = True
+        from_attributes = True
 
 
 
@@ -29,7 +29,7 @@ class ShowUser(BaseModel):
     blogs: List[Blog] = []
 
     class Config():
-        orm_mode = True
+        from_attributes = True
 
 
 
@@ -40,4 +40,4 @@ class ShowBlog(BaseModel):
     creator: ShowUser
 
     class Config():
-        orm_mode = True
+        from_attributes = True
