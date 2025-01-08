@@ -41,3 +41,10 @@ class ShowBlog(BaseModel):
 
     class Config():
         from_attributes = True
+
+
+
+# Login/Authentication schema
+class Login(BaseModel):
+    username:str
+    password:str
