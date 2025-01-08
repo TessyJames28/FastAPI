@@ -12,3 +12,6 @@ class Hash():
     def bcrypt(password:str):
         hashed_pwd = pwd_context.hash(password)
         return hashed_pwd
+    
+    def verify(plain_pwd, hashed_pwd):
+        return pwd_context.verify(plain_pwd, hashed_pwd)
