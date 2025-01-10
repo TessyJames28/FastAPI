@@ -1,1 +1,1 @@
-Create a blog using fast API. A tutorial on FAST API
+Create a blog using fast API
