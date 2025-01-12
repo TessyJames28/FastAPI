@@ -44,3 +44,19 @@ Ensure you have the following installed:
    ```bash
    git clone https://github.com/TessyJames28/FastAPI.git
    cd blog-app
+
+## API Endpoints
+
+### Authentication
+- **POST** `/token` - Obtain an access token.
+
+### Users
+- **POST** `/users/` - Register a new user.
+- **GET** `/users/{id}` - Retrieve a specific user.
+
+### Blogs
+- **GET** `/blogs/` - Retrieve all blogs.
+- **POST** `/blogs/` - Create a new blog.
+- **GET** `/blogs/{id}` - Retrieve a specific blog.
+- **PUT** `/blogs/{id}` - Update a blog.
+- **DELETE** `/blogs/{id}` - Delete a blog.
